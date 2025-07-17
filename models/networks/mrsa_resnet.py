@@ -402,6 +402,7 @@ class PoseResNet(nn.Module):
                 x = x1_hm
             elif head == "hm":
                 x1_hm = x
+            print("Feature shape before head:", x.shape)
 
             ret[head] = self.__getattr__(head)(x)
 

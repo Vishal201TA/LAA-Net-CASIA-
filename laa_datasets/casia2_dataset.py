@@ -27,6 +27,8 @@ class CASIA2Dataset(Dataset):
         self._load_data()
 
         # Apply transforms from cfg
+        print("Resize input size:", self.input_size)
+
         self.img_transform = transforms.Compose([
             transforms.Resize(self.input_size),
             transforms.ToTensor(),
