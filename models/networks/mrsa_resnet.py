@@ -408,37 +408,23 @@ class PoseResNet(nn.Module):
         return [ret]
 
 
-def init_weights(self, pretrained=True, **kwargs):
-    num_layers = getattr(self, "num_layers", None)
-    if pretrained:
-        if self.fpn:
-            for bl in [self.pw_block_1, self.pw_block_2]:
-                for _, l in bl.named_parameters():
+    def init_weights(self, pretrained=True, **kwargs):
+        num_layers = getattr(self, "num_layers", None)
+        if pretrained:
+            if self.fpn:
+                for bl in [self.pw_block_1, self.pw_block_2]:
+                    for _, l in bl.named_parameters():
+                        if isinstance(l, nn.Conv2d):
+                            nn.init.normal_(l.weight, std=0.001)
+                            nn.init.constant_(l.bias, 0)
+
+                for _, l in self.inception_block.named_parameters():
                     if isinstance(l, nn.Conv2d):
                         nn.init.normal_(l.weight, std=0.001)
                         nn.init.constant_(l.bias, 0)
 
-            for _, l in self.inception_block.named_parameters():
-                if isinstance(l, nn.Conv2d):
-                    nn.init.normal_(l.weight, std=0.001)
-                    nn.init.constant_(l.bias, 0)
-
-        if isinstance(self.deconv_layers, nn.Module):
-            for _, m in self.deconv_layers.named_modules():
-                if isinstance(m, nn.ConvTranspose2d):
-                    nn.init.normal_(m.weight, std=0.001)
-                    if self.deconv_with_bias:
-                        nn.init.constant_(m.bias, 0)
-                elif isinstance(m, nn.BatchNorm2d):
-                    nn.init.constant_(m.weight, 1)
-                    nn.init.constant_(m.bias, 0)
-        else:
-            for layer in [
-                self.deconv_layer_0,
-                self.deconv_layer_1,
-                self.deconv_layer_2,
-            ]:
-                for _, m in layer.named_modules():
+            if isinstance(self.deconv_layers, nn.Module):
+                for _, m in self.deconv_layers.named_modules():
                     if isinstance(m, nn.ConvTranspose2d):
                         nn.init.normal_(m.weight, std=0.001)
                         if self.deconv_with_bias:
@@ -446,37 +432,51 @@ def init_weights(self, pretrained=True, **kwargs):
                     elif isinstance(m, nn.BatchNorm2d):
                         nn.init.constant_(m.weight, 1)
                         nn.init.constant_(m.bias, 0)
-
-        for head in self.heads:
-            final_layer = self.__getattr__(head)
-            for i, m in enumerate(final_layer.modules()):
-                if isinstance(m, nn.Conv2d):
-                    if m.weight.shape[0] == self.heads[head]:
-                        if "hm" in head:
-                            nn.init.constant_(m.bias, -2.19)
-                        else:
+            else:
+                for layer in [
+                    self.deconv_layer_0,
+                    self.deconv_layer_1,
+                    self.deconv_layer_2,
+                ]:
+                    for _, m in layer.named_modules():
+                        if isinstance(m, nn.ConvTranspose2d):
                             nn.init.normal_(m.weight, std=0.001)
+                            if self.deconv_with_bias:
+                                nn.init.constant_(m.bias, 0)
+                        elif isinstance(m, nn.BatchNorm2d):
+                            nn.init.constant_(m.weight, 1)
                             nn.init.constant_(m.bias, 0)
 
-        # Load pretrained model from torchvision
-        if num_layers is None:
-            raise ValueError(
-                "num_layers is not defined. Ensure it's set in the config and passed to the model."
-            )
+            for head in self.heads:
+                final_layer = self.__getattr__(head)
+                for i, m in enumerate(final_layer.modules()):
+                    if isinstance(m, nn.Conv2d):
+                        if m.weight.shape[0] == self.heads[head]:
+                            if "hm" in head:
+                                nn.init.constant_(m.bias, -2.19)
+                            else:
+                                nn.init.normal_(m.weight, std=0.001)
+                                nn.init.constant_(m.bias, 0)
 
-        resnet_key = f"resnet{num_layers}"
-        if resnet_key not in model_urls:
-            raise KeyError(
-                f"{resnet_key} is not a valid ResNet. Choose from: {list(model_urls.keys())}"
-            )
+            # Load pretrained model from torchvision
+            if num_layers is None:
+                raise ValueError(
+                    "num_layers is not defined. Ensure it's set in the config and passed to the model."
+                )
 
-        url = model_urls[resnet_key]
-        pretrained_state_dict = model_zoo.load_url(url)
-        print("=> loading pretrained model {}".format(url))
-        self.load_state_dict(pretrained_state_dict, strict=False)
-    else:
-        print("=> imagenet pretrained model does not exist")
-        raise ValueError("imagenet pretrained model does not exist")
+            resnet_key = f"resnet{num_layers}"
+            if resnet_key not in model_urls:
+                raise KeyError(
+                    f"{resnet_key} is not a valid ResNet. Choose from: {list(model_urls.keys())}"
+                )
+
+            url = model_urls[resnet_key]
+            pretrained_state_dict = model_zoo.load_url(url)
+            print("=> loading pretrained model {}".format(url))
+            self.load_state_dict(pretrained_state_dict, strict=False)
+        else:
+            print("=> imagenet pretrained model does not exist")
+            raise ValueError("imagenet pretrained model does not exist")
 
 
 resnet_spec = {
