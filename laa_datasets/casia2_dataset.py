@@ -1,5 +1,4 @@
-from register.register import DATASETS
-
+from laa_datasets.builder import DATASETS
 from torch.utils.data import Dataset
 import os
 import json
