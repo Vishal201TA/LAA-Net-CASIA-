@@ -216,7 +216,8 @@ class PoseResNet(nn.Module):
                             nn.AdaptiveMaxPool2d(pooled_size),
                             nn.Flatten(),
                             nn.Linear(
-                                256 * (pooled_size ** 2),  # ✅ use 256 instead of num_output
+                                256
+                                * (pooled_size**2),  
                                 head_conv,
                                 bias=True,
                             ),
@@ -244,8 +245,7 @@ class PoseResNet(nn.Module):
                     stride=1,
                     padding=0,
                 )
-        self.__setattr__(head, fc)
-
+            self.__setattr__(head, fc)
 
     def _point_wise_block(self, inplanes, outplanes):
         self.inplanes = outplanes
@@ -395,11 +395,10 @@ class PoseResNet(nn.Module):
                 x = x1_hm
             elif head == "hm":
                 x1_hm = x
-            
+
             ret[head] = self.__getattr__(head)(x)
 
         return [ret]
-
 
     def init_weights(self, pretrained=True, **kwargs):
         num_layers = getattr(self, "num_layers", None)
