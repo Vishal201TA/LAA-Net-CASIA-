@@ -78,6 +78,7 @@ MODEL:
     hm: 1
     cls: 1
     cstency: 256
+    offset: 2
   INIT_WEIGHTS:
     num_layers: 18
     pretrained: True
