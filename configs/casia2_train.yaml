@@ -20,6 +20,9 @@ DATASET:
     TYPE: images
     SAMPLES_PER_VIDEO:
       ACTIVE: False
+      TRAIN: 32
+      VAL: 32
+      TEST: 32
     TRAIN:
       NAME: CASIA2
       ROOT: /kaggle/working/
