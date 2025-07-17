@@ -402,12 +402,12 @@ class PoseResNet(nn.Module):
                 x = x1_hm
             elif head == "hm":
                 x1_hm = x
-            print("Feature shape before head:", x.shape)
-
+            if len(x.shape) == 4:
+                x = torch.nn.functional.adaptive_avg_pool2d(x, (1, 1))
+                x = x.view(x.size(0), -1)
             ret[head] = self.__getattr__(head)(x)
 
         return [ret]
-
 
     def init_weights(self, pretrained=True, **kwargs):
         num_layers = getattr(self, "num_layers", None)
