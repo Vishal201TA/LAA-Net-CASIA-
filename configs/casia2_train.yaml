@@ -88,7 +88,8 @@ TRAIN:
   batch_size: 16
   lr: 0.00005
   epochs: 3  # Try with 3 epochs first to test
-  warm_up: 2
+  freeze_backbone: false
+  warm_up: 0
   every_val_epochs: 1
   loss:
     type: CombinedFocalLoss
