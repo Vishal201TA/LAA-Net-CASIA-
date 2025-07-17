@@ -2,6 +2,7 @@ from laa_datasets.builder import DATASETS
 from torch.utils.data import Dataset
 import os
 import json
+import numpy as np
 import torch
 from PIL import Image
 import torchvision.transforms as transforms
