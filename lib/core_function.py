@@ -94,7 +94,7 @@ def train(cfg, model, critetion, optimizer, epoch, data_loader, logger, writer, 
                 else:
                     heatmaps = targets.cuda().to(non_blocking=True, dtype=torch.float64)
                     
-                loss_ = critetion(outputs_hm, heatmaps, outputs_cls.sigmoid(), labels, 
+                loss_ = critetion(outputs_hm, heatmaps, outputs_cls.sigmoid(), labels.view(-1,1), 
                                   offset_preds=outputs_offset, 
                                   offset_gts=offsets,
                                   cstency_preds=outputs_cstency,
@@ -212,7 +212,7 @@ def validate(cfg, model, critetion, epoch, data_loader, logger, writer, devices,
                 else:
                     heatmaps = targets.cuda().to(non_blocking=True, dtype=torch.float64)
                     
-                loss_ = critetion(outputs_hm, heatmaps, outputs_cls.sigmoid(), labels, 
+                loss_ = critetion(outputs_hm, heatmaps, outputs_cls.sigmoid(), labels.view(-1,1), 
                                   offset_preds=outputs_offset, 
                                   offset_gts=offsets,
                                   cstency_preds=outputs_cstency,
