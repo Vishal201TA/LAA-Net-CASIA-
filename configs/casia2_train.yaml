@@ -108,9 +108,10 @@ TRAIN:
   optimizer: Adam
 
   # LR Scheduler
-  lr_scheduler: MultiStepLR     # Options: MultiStepLR, CosineAnnealingLR, etc.
-  milestones: [1, 2]            # Adjust based on your short training epochs
-  gamma: 0.1                    # Decay factor for LR scheduler
+  lr_scheduler:
+    type: MultiStepLR
+    milestones: [1, 2]
+    gamma: 0.1
 
   distributed: False
   resume: False
