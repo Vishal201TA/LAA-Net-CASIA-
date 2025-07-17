@@ -95,6 +95,7 @@ TRAIN:
     hm_lmda: 10
     cstency_lmda: 100
     mse_reduction: sum
+    use_target_weight: False
     ce_reduction: mean
   optimizer: Adam
   distributed: False
