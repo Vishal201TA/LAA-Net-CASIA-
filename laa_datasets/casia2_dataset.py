@@ -59,6 +59,8 @@ class CASIA2Dataset(Dataset):
         image = Image.open(sample["image"]).convert("RGB")
         image = self.img_transform(image)
         label = sample["label"]
+        cstency_heatmap = torch.zeros((1, self.output_size[0], self.output_size[1]))  # shape [1, 64, 64]
+
 
         if label == 1 and sample["mask"] and os.path.exists(sample["mask"]):
             mask = Image.open(sample["mask"]).convert("L")
@@ -74,6 +76,7 @@ class CASIA2Dataset(Dataset):
             'heatmap': mask,
             'cstency_hm': mask,
             'offset': torch.zeros_like(mask),
+            "cstency_heatmap": cstency_heatmap,
         }
 
     def train_worker_init_fn(self, worker_id):
