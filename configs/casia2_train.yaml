@@ -1,5 +1,5 @@
-TASK: CASIA2_ResNet18
-PRECISION: float64
+TASK: CASIA2_LAA_Training
+PRECISION: float32
 METRICS_BASE: binary
 SEED: 42
 DATA_RELOAD: True
@@ -7,9 +7,8 @@ DATA_RELOAD: True
 DATASET:
   type: HeatmapFaceForensic
   TRAIN: True
-  COMPRESSION: c0
-  IMAGE_SUFFIX: png
-  NUM_WORKERS: 4
+  IMAGE_SUFFIX: jpg
+  NUM_WORKERS: 2
   PIN_MEMORY: True
   IMAGE_SIZE: [384, 384]
   HEATMAP_SIZE: [96, 96]
@@ -20,54 +19,44 @@ DATASET:
   DATA:
     TYPE: images
     SAMPLES_PER_VIDEO:
-      ACTIVE: True
-      TRAIN: 32
-      VAL: 32
-      TEST: 32
+      ACTIVE: False
     TRAIN:
       NAME: CASIA2
-      ROOT: /mnt/c/Users/vishal.das/Desktop/Project/FakeImageDetection/LAA-Net/LAA-Net/CASIA2/
+      ROOT: /kaggle/working/
       FROM_FILE: False
-      FAKETYPE: [Tp, Au]
-      LABEL_FOLDER: [fake, real]
+      FAKETYPE: [fake, real]
+      LABEL_FOLDER: [real, fake]
     VAL:
       NAME: CASIA2
-      ROOT: /mnt/c/Users/vishal.das/Desktop/Project/FakeImageDetection/LAA-Net/LAA-Net/CASIA2/
+      ROOT: /kaggle/working/
       FROM_FILE: False
-      FAKETYPE: [Tp, Au]
-      LABEL_FOLDER: [fake, real]
+      FAKETYPE: [fake, real]
+      LABEL_FOLDER: [real, fake]
     TEST:
       NAME: CASIA2
-      ROOT: /mnt/c/Users/vishal.das/Desktop/Project/FakeImageDetection/LAA-Net/LAA-Net/CASIA2/
+      ROOT: /kaggle/working/
       FROM_FILE: False
-      FAKETYPE: [Tp, Au]
-      LABEL_FOLDER: [fake, real]
+      FAKETYPE: [fake, real]
+      LABEL_FOLDER: [real, fake]
+
   TRANSFORM:
     geometry:
       type: GeometryTransform
-      resize: [384, 384, 1]
-      normalize: 0
+      resize: [384, 384, 0]
+      normalize: 1
       horizontal_flip: 0.5
-      cropping: [0.15, 0.5]
-      scale: [0.15, 0.5]
-      rand_erasing: [0.5, 1]
     color:
       type: ColorJitterTransform
-      clahe: 0.0
-      colorjitter: 0.3
+      colorjitter: 0.2
       gaussianblur: 0.3
       gaussnoise: 0.3
-      jpegcompression: [0.5, 40, 100]
       rgbshift: 0.3
-      randomcontrast: 0.0
-      randomgamma: 0.5
-      randombrightness: 1
-      huesat: 1
+      randomgamma: 0.3
+      randombrightness: 0.5
+      huesat: 0.5
     normalize:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
-  DEBUG: False
-  DYNAMIC_FXRAY: False
 
 MODEL:
   type: PoseResNet
@@ -90,56 +79,30 @@ MODEL:
     cstency: 256
   INIT_WEIGHTS:
     pretrained: True
+    advprop: False
 
 TRAIN:
   gpus: [0]
   batch_size: 16
   lr: 0.00005
-  epochs: 100
-  begin_epoch: -1
-  warm_up: 6
+  epochs: 3  # Try with 3 epochs first to test
+  warm_up: 2
   every_val_epochs: 1
   loss:
     type: CombinedFocalLoss
-    use_target_weight: False
     cls_lmda: 1
-    dst_hm_cls_lmda: 0
-    offset_lmda: 0
     hm_lmda: 10
     cstency_lmda: 100
     mse_reduction: sum
     ce_reduction: mean
-  optimizer: SAM
+  optimizer: Adam
   distributed: False
-  pretrained: ''
-  tensorboard: True
   resume: False
-  lr_scheduler:
-    milestones: [5, 15, 20, 25]
-    gamma: 0.5
-  freeze_backbone: False
-  debug:
-    active: False
-    save_hm_gt: True
-    save_hm_pred: True
+  tensorboard: False
 
 TEST:
   gpus: [0]
-  subtask: 'eval'
-  test_file: ''
-  vis_hm: True
+  vis_hm: False
   threshold: 0.5
   flip_test: True
-  video_level: True
-  pretrained: ''
-
-PREPROCESSING:
-  DATASET: CASIA2
-  SPLIT: train
-  ROOT: /mnt/c/Users/vishal.das/Desktop/Project/FakeImageDetection/LAA-Net/LAA-Net/CASIA2/
-  FAKETYPE: [Tp, Au]
-  IMAGE_SUFFIX: jpg
-  DATA_TYPE: images
-  LABEL: [fake, real]
-  facial_lm_pretrained: pretrained/shape_predictor_68_face_landmarks.dat
-  DEBUG: False
+  video_level: False
