@@ -405,6 +405,7 @@ class PoseResNet(nn.Module):
             if len(x.shape) == 4:
                 x = torch.nn.functional.adaptive_avg_pool2d(x, (1, 1))
                 x = x.view(x.size(0), -1)
+            print("Shape before Linear:", x.shape)
             ret[head] = self.__getattr__(head)(x)
 
         return [ret]
