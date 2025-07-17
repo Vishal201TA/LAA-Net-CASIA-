@@ -67,7 +67,7 @@ class CASIA2Dataset(Dataset):
         # Return in dict format expected by the rest of the pipeline
         return {
             'img': image,
-            'cls_label': torch.tensor(label, dtype=torch.long),
+            'label': torch.tensor(label, dtype=torch.long),
             'target': mask,
             'heatmap': mask,
             'cstency_hm': mask,
