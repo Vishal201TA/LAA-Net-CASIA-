@@ -103,6 +103,9 @@ TRAIN:
     mse_reduction: sum
     use_target_weight: False
     ce_reduction: mean
+    
+  debug:
+    active: False
 
   # Optimizer
   optimizer: Adam
