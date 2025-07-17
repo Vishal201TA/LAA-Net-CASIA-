@@ -8,6 +8,7 @@ DATASET:
   type: HeatmapFaceForensic
   TRAIN: True
   COMPRESSION: c0
+  DEBUG: False
   IMAGE_SUFFIX: jpg
   NUM_WORKERS: 2
   PIN_MEMORY: True
