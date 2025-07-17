@@ -64,9 +64,13 @@ class CASIA2Dataset(Dataset):
 
         if label == 1 and sample["mask"] and os.path.exists(sample["mask"]):
             mask = Image.open(sample["mask"]).convert("L")
-            mask = self.mask_transform(mask)
+            mask = self.mask_transform(mask)  # shape: [1, H, W]
         else:
             mask = torch.zeros((1, *self.output_size), dtype=torch.float32)
+
+        # Repeat mask across channels to match model output (e.g., 2 channels)
+        mask = mask.repeat(2, 1, 1)  # final shape: [2, H, W]
+
 
         # Return in dict format expected by the rest of the pipeline
         return {
