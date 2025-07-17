@@ -5,20 +5,15 @@ SEED: 42
 DATA_RELOAD: True
 
 DATASET:
-  type: HeatmapFaceForensic
+  type: CASIA2Dataset
   TRAIN: True
-  COMPRESSION: c0
-  DEBUG: False
-  DYNAMIC_FXRAY: False
   IMAGE_SUFFIX: jpg
   NUM_WORKERS: 2
   PIN_MEMORY: True
   IMAGE_SIZE: [384, 384]
   HEATMAP_SIZE: [96, 96]
-  SIGMA: 2
-  ADAPTIVE_SIGMA: True
-  HEATMAP_TYPE: gaussian
   SPLIT_IMAGE: False
+
   DATA:
     TYPE: images
     SAMPLES_PER_VIDEO:

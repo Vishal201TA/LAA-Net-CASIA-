@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 from .builder import PIPELINES, DATASETS, build_dataset
 from .pipelines import *
 from .face_forensic_binary import (
@@ -10,9 +9,11 @@ from .face_forensic_hm import (
 from .face_forensic_sbi import (
     SBIFaceForensic
 )
-
+from .casia2_dataset import (
+    CASIA2Dataset
+)
 
 __all__ = ['GeometryTransform', 'BinaryFaceForensic', 
            'ColorJitterTransform', 'PIPELINES', 
            'DATASETS', 'build_dataset', 'HeatmapFaceForensic',
-           'SBIFaceForensic']
+           'SBIFaceForensic', 'CASIA2Dataset']
