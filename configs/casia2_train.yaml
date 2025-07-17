@@ -95,6 +95,7 @@ TRAIN:
     hm_lmda: 10
     cstency_lmda: 100
     offset_lmda: 1 
+    dst_hm_cls_lmda: 1  
     mse_reduction: sum
     use_target_weight: False
     ce_reduction: mean
