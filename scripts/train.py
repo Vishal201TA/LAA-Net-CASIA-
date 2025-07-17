@@ -198,7 +198,7 @@ if __name__ == "__main__":
         np.random.seed(seed + epoch)
         if epoch > 0 and cfg.DATA_RELOAD:
             logger.info(f"Reloading data for epoch {epoch}...")
-            train_dataset._reload_data()
+            train_dataset._load_data()
             train_dataloader = DataLoader(
                 train_dataset,
                 batch_size=cfg.TRAIN.batch_size * len(cfg.TRAIN.gpus),
