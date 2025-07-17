@@ -11,7 +11,7 @@ import albumentations as A
 import numpy as np
 from albumentations.augmentations.transforms import DualTransform
 
-from datasets.builder import PIPELINES
+from laa_datasets.builder import PIPELINES
 from .functional import _get_pixels
 
 

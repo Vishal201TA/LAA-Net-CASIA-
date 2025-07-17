@@ -26,7 +26,7 @@ from package_utils.utils import vis_heatmap
 from package_utils.image_utils import load_image, crop_by_margin
 from losses.losses import _sigmoid
 from lib.metrics import get_acc_mesure_func, bin_calculate_auc_ap_ar
-from datasets import DATASETS, build_dataset
+from laa_datasets import DATASETS, build_dataset
 from lib.core_function import AverageMeter
 from logs.logger import Logger, LOG_DIR
 

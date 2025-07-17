@@ -18,10 +18,10 @@ from tensorboardX import SummaryWriter
 import numpy as np
 
 from configs.get_config import load_config
-from datasets.builder import build_dataset
-from datasets import PIPELINES, DATASETS
+from laa_datasets.builder import build_dataset
+from laa_datasets import PIPELINES, DATASETS
 from models import *
-from datasets import *
+from laa_datasets import *
 from losses import *
 from lib.core_function import validate, train, test
 from logs.logger import Logger, LOG_DIR

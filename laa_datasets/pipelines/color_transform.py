@@ -3,7 +3,7 @@ import sys
 if not os.getcwd() in sys.path:
     sys.path.append(os.getcwd())
 
-from datasets.builder import PIPELINES
+from laa_datasets.builder import PIPELINES
 import albumentations as A
 
 

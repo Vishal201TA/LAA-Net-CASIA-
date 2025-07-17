@@ -78,7 +78,7 @@ class BinaryFaceForensic(CommonDataset):
 
 
 if __name__=="__main__":
-    from datasets import *
+    from laa_datasets import *
     from pipelines.geo_transform import GeometryTransform
     from pipelines.color_transform import ColorJitterTransform
     from torch.utils.data import DataLoader
