@@ -64,8 +64,15 @@ class CASIA2Dataset(Dataset):
         else:
             mask = torch.zeros((1, *self.output_size), dtype=torch.float32)
 
-        # LAA-Net expects 5 outputs: image, cls_label, mask, heatmap, cstency_hm
-        return image, torch.tensor(label, dtype=torch.long), mask, mask, mask
+        # Return in dict format expected by the rest of the pipeline
+        return {
+            'img': image,
+            'cls_label': torch.tensor(label, dtype=torch.long),
+            'target': mask,
+            'heatmap': mask,
+            'cstency_hm': mask,
+            'offset': torch.zeros_like(mask),
+        }
 
     def train_worker_init_fn(self, worker_id):
         seed = torch.initial_seed() % 2**32
@@ -73,4 +80,8 @@ class CASIA2Dataset(Dataset):
         random.seed(seed)
 
     def train_collate_fn(self, batch):
-        return tuple(zip(*batch))
+        collated = {}
+        for key in batch[0]:
+            collated[key] = torch.stack([item[key] for item in batch])
+        return collated
+
