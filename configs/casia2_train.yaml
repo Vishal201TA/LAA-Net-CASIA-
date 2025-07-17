@@ -91,6 +91,8 @@ TRAIN:
   freeze_backbone: false
   warm_up: 0
   every_val_epochs: 1
+
+  # Loss function configuration
   loss:
     type: CombinedFocalLoss
     cls_lmda: 1
@@ -101,7 +103,15 @@ TRAIN:
     mse_reduction: sum
     use_target_weight: False
     ce_reduction: mean
+
+  # Optimizer
   optimizer: Adam
+
+  # LR Scheduler
+  lr_scheduler: MultiStepLR     # Options: MultiStepLR, CosineAnnealingLR, etc.
+  milestones: [1, 2]            # Adjust based on your short training epochs
+  gamma: 0.1                    # Decay factor for LR scheduler
+
   distributed: False
   resume: False
   tensorboard: False
