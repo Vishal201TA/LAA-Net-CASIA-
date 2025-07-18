@@ -12,6 +12,7 @@ if os.getcwd() not in sys.path:
 import argparse
 from datetime import datetime
 import random
+import shutil
 
 import torch
 import torch.optim as optim
@@ -246,3 +247,12 @@ if __name__ == "__main__":
                 max_val_acc = acc_val.avg
                 logger.info(f"Saved best model at epoch --- {epoch}")
         lr_scheduler.step()
+
+# Save final model checkpoint
+# Save the model to working
+torch.save(model.module.state_dict(), "/kaggle/working/final_model.pth")
+
+# Move it to output so it's persisted
+shutil.copy("/kaggle/working/final_model.pth", "/kaggle/outputs/final_model.pth")
+print("✅ Model saved at /kaggle/outputs/final_model.pth")
+
