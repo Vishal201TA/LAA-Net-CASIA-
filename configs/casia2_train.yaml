@@ -88,7 +88,7 @@ TRAIN:
   gpus: [0]
   batch_size: 16
   lr: 0.00005
-  epochs: 3  # Try with 3 epochs first to test
+  epochs: 100  
   freeze_backbone: false
   warm_up: 0
   every_val_epochs: 1
