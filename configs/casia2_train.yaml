@@ -88,7 +88,7 @@ TRAIN:
   gpus: [0]
   batch_size: 16
   lr: 0.00005
-  epochs: 10  
+  epochs: 6  
   freeze_backbone: false
   warm_up: 0
   every_val_epochs: 1

@@ -5,7 +5,7 @@ import time
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from IPython.display import FileLink,display
 
 if os.getcwd() not in sys.path:
     sys.path.append(os.getcwd())
@@ -248,11 +248,9 @@ if __name__ == "__main__":
                 logger.info(f"Saved best model at epoch --- {epoch}")
         lr_scheduler.step()
 
-# Save final model checkpoint
-# Save the model to working
-torch.save(model.module.state_dict(), "/kaggle/working/final_model.pth")
+save_path = "/kaggle/working/final_laa_net_model.pth"
+torch.save(model.module.state_dict(), save_path)
 
-# Move it to output so it's persisted
-shutil.copy("/kaggle/working/final_model.pth", "/kaggle/outputs/final_model.pth")
-print("✅ Model saved at /kaggle/outputs/final_model.pth")
-
+# Display download link
+print("✅ Model saved. Click the link below to download:")
+display(FileLink(save_path))
